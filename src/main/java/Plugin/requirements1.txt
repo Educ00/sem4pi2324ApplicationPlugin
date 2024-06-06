@@ -1,0 +1,25 @@
+@start-reference@ "AAAAAAAA-JuniorJavaSoftwareEngineer-FULL_TIME" @end-reference@
+
+@start-requirement@
+    @start-type@ minimum @end-type@
+    @start-requirement-body@ "Minimum Java Experience Years" @end-requirement-body@
+    @start-answer@ 2 @end-answer@
+@end-requirement@
+
+@start-requirement@
+    @start-type@ minimum @end-type@
+    @start-requirement-body@ "Known Languagues" @end-requirement-body@
+    @start-answer@ "Java", "C", "Python" @end-answer@
+@end-requirement@
+
+@start-requirement@
+    @start-type@ specific @end-type@
+    @start-requirement-body@ "Scrum experience? Yes/No" @end-requirement-body@
+    @start-answer@ "Yes" @end-answer@
+@end-requirement@
+
+@start-requirement@
+    @start-type@ specific @end-type@
+    @start-requirement-body@ "Type the versions of java that you are used to work on Options: 11 and/or 17" @end-requirement-body@
+    @start-answer@ 11, 17 @end-answer@
+@end-requirement@
