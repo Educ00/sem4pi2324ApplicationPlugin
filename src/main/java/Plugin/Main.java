@@ -5,6 +5,7 @@ import Plugin.antlr4.GrammarLexer;
 import Plugin.antlr4.GrammarParser;
 import eapli.jobs4u.app.plugin.Application.ApplicationImporter;
 import eapli.jobs4u.app.requirements.domain.Requirement;
+import eapli.jobs4u.app.requirements.domain.RequirementType;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -72,13 +73,13 @@ public class Main implements ApplicationImporter {
             writer.write("@start-requirement@\n" +
                     "    @start-type@ minimum @end-type@\n" +
                     "    @start-requirement-body@ \"Requirement body between quotes\" @end-requirement-body@\n" +
-                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@\n" +
+                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-answer@\n" +
                     "@end-requirement@\n");
             writer.newLine();
             writer.write("@start-requirement@\n" +
                     "    @start-type@ specific @end-type@\n" +
                     "    @start-requirement-body@ \"Requirement body between quotes\" @end-requirement-body@\n" +
-                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@\n" +
+                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-answer@\n" +
                     "@end-requirement@\n");
 
         } catch (IOException e) {
@@ -130,9 +131,9 @@ public class Main implements ApplicationImporter {
                 writer.newLine();
                 writer.write("    @start-requirement-body@ \"" + requirement.body() + "\" @end-requirement-body@");
                 writer.newLine();
-                writer.write("    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@");
+                writer.write("    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-answer@");
                 writer.newLine();
-                writer.write("end-requirement@");
+                writer.write("@end-requirement@");
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -142,7 +143,36 @@ public class Main implements ApplicationImporter {
     }
 
     @Override
-    public boolean checkRequirements(Set<Requirement> set, Set<Requirement> set1) {
-        return false;
+    public boolean checkRequirements(Set<Requirement> requirementSet, Set<Requirement> requirementAnswersSet) {
+        for (Requirement requirement : requirementSet) {
+            boolean foundMatch = false;
+            for (Requirement requirementAnswer : requirementAnswersSet) {
+                if (requirementAnswer.body().equals(requirement.body())) {
+                    foundMatch = true;
+                    if (requirement.requirementType() == RequirementType.Specific) {
+                        for (String specific : requirement.specificRequirements()) {
+                            if (requirement.specificRequirements().size() != requirementAnswer.specificRequirements().size()){
+                                return false;
+                            }
+                            if (!requirementAnswer.specificRequirements().contains(specific)) {
+                                return false;
+                            }
+                        }
+                    } else if (requirement.requirementType() == RequirementType.Minimum) {
+                        for (String minimum : requirement.minimumRequirements()) {
+                            if (!requirementAnswer.minimumRequirements().contains(minimum)) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            if (!foundMatch) {
+                return false;
+            }
+        }
+        return true;
     }
+
 }
