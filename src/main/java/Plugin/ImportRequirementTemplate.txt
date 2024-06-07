@@ -1,0 +1,13 @@
+@start-reference@ "Job Reference (beetween ")" @end-reference@
+
+@start-requirement@
+    @start-type@ minimum @end-type@
+    @start-requirement-body@ "Requirement body between quotes" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+@end-requirement@
+
+@start-requirement@
+    @start-type@ specific @end-type@
+    @start-requirement-body@ "Requirement body between quotes" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+@end-requirement@

@@ -11,5 +11,7 @@ public class Test {
         for (Requirement requirement : set){
             System.out.println(requirement);
         }
+        System.out.println("General template: " + main.buildGeneralTemplateForRequirementsUpload("src/main/java/Plugin"));
+        System.out.println("Application template: " + main.buildTemplateForApplication("src/main/java/Plugin", set));
     }
 }

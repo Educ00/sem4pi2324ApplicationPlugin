@@ -10,7 +10,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.lang.ref.Reference;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,13 +50,95 @@ public class Main implements ApplicationImporter {
     }
 
     @Override
-    public String buildGeneralTemplateForRequirementsUpload(String s) {
-        return "";
+    public String buildGeneralTemplateForRequirementsUpload(String outputFolderPath) {
+        String outputFilePath;
+        try {
+            File file = new File(outputFolderPath);
+            if (!file.exists() || file.isFile()) {
+                throw new IllegalArgumentException("Invalid file path. HINT: Should be a directory.");
+            }
+            outputFilePath = outputFolderPath.concat(File.separator).concat("ImportRequirementTemplate.txt");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+        }
+
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(outputFilePath), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+
+            writer.write("@start-reference@ \"Job Reference (beetween \")\" @end-reference@");
+            writer.newLine();
+            writer.newLine();
+
+            writer.write("@start-requirement@\n" +
+                    "    @start-type@ minimum @end-type@\n" +
+                    "    @start-requirement-body@ \"Requirement body between quotes\" @end-requirement-body@\n" +
+                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@\n" +
+                    "@end-requirement@\n");
+            writer.newLine();
+            writer.write("@start-requirement@\n" +
+                    "    @start-type@ specific @end-type@\n" +
+                    "    @start-requirement-body@ \"Requirement body between quotes\" @end-requirement-body@\n" +
+                    "    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@\n" +
+                    "@end-requirement@\n");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return outputFilePath;
     }
 
     @Override
-    public String buildTemplateForApplication(String s, Set<Requirement> set) {
-        return "";
+    public String buildTemplateForApplication(String outputFolderPath, Set<Requirement> requirementSet) {
+        String outputFilePath = "";
+        try {
+            File file = new File(outputFolderPath);
+            if (!file.exists() || file.isFile()) {
+                throw new IllegalArgumentException("Invalid file path. HINT: Should be a directory.");
+            }
+            outputFilePath = outputFolderPath.concat(File.separator).concat("template_for_application_of_"+requirementSet.iterator().next().jobOpeningReference().toString().replaceAll("\"", "")+".txt");
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return null;
+        }
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(outputFilePath), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+            writer.write("// --------------------------------------------------------------------------------");
+            writer.newLine();
+            writer.write("// ONLY WRITE ON THE ANSWER FIElDS.");
+            writer.newLine();
+            writer.write("// DO NOT CHANGE THE ORDER OR ADD SPACES, TABS OR OTHER CHARACTERS IN THE DOCUMENT");
+            writer.newLine();
+            writer.write("// --------------------------------------------------------------------------------");
+            writer.newLine();
+            writer.newLine();
+            writer.write("@start-reference@ \"" + requirementSet.iterator().next().jobOpeningReference().toString() +"\" @end-reference@");
+            writer.newLine();
+            writer.newLine();
+            for (Requirement requirement : requirementSet){
+                writer.write("@start-requirement@");
+                writer.newLine();
+                String type = "";
+                switch (requirement.requirementType()){
+                    case Minimum:
+                        type = "minimum";
+                        break;
+                    case Specific:
+                        type = "specific";
+                        break;
+                }
+                writer.write("    @start-type@ " + type + " @end-type@");
+                writer.newLine();
+                writer.write("    @start-requirement-body@ \"" + requirement.body() + "\" @end-requirement-body@");
+                writer.newLine();
+                writer.write("    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@");
+                writer.newLine();
+                writer.write("end-requirement@");
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return outputFilePath;
     }
 
     @Override

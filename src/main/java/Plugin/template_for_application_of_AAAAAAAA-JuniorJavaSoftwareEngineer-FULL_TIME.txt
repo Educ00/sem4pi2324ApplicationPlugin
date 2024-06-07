@@ -1,0 +1,27 @@
+// --------------------------------------------------------------------------------
+// ONLY WRITE ON THE ANSWER FIElDS.
+// DO NOT CHANGE THE ORDER OR ADD SPACES, TABS OR OTHER CHARACTERS IN THE DOCUMENT
+// --------------------------------------------------------------------------------
+
+@start-reference@ ""AAAAAAAA-JuniorJavaSoftwareEngineer-FULL_TIME"" @end-reference@
+
+@start-requirement@
+    @start-type@ specific @end-type@
+    @start-requirement-body@ "Scrum experience? Yes/No" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+end-requirement@
+@start-requirement@
+    @start-type@ specific @end-type@
+    @start-requirement-body@ "Type the versions of java that you are used to work on Options: 11 and/or 17" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+end-requirement@
+@start-requirement@
+    @start-type@ minimum @end-type@
+    @start-requirement-body@ "Minimum Java Experience Years" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+end-requirement@
+@start-requirement@
+    @start-type@ minimum @end-type@
+    @start-requirement-body@ "Known Languagues" @end-requirement-body@
+    @start-answer@  Number(s) separated by commas or Words between quotes and seperated commas @end-correct-answer@
+end-requirement@
